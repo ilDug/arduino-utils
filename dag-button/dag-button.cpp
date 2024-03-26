@@ -2,23 +2,26 @@
 
 void dagBtnNoop() {} // funzione segnaposto che non fa niente
 
-DagButton::DagButton(int pin)
-    : DagButton(pin, HIGH){};
+DagButton::DagButton(int pin) : DagButton(pin, PULLDOWN)
+{
+    // chiamata al costruttore con due parametri
+    // se non viene specificato il secondo parametro, il default è PULLDOWN
+}
 
-DagButton::DagButton(int pin, int mode)
+DagButton::DagButton(int pin, DagBtnTriggerMode triggeredBy = PULLDOWN)
 {
     call_back = dagBtnNoop;
     PIN = pin;
-    triggeredBy = mode;
+    this->triggeredBy = triggeredBy;
 
-    if (triggeredBy == HIGH)
+    if (triggeredBy == PULLDOWN)
     {
         // modalità PULLDOWN, ricordarsi di mettere una resistenza di pull_down
         // il pulsante esegue la callback quando lo stato del pin è HIGH
         pinMode(PIN, INPUT);
     }
 
-    if (triggeredBy == LOW)
+    if (triggeredBy == PULLUP)
     {
         // modalità PULLUP. Usa la pullup interna di arduino
         // il pulsante esegue la callback quando lo stato del pin è LOW
