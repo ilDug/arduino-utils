@@ -16,10 +16,10 @@ void DagTimer::init(unsigned long time_duration)
 
 void DagTimer::init(unsigned long time_duration, bool repeat)
 {
-    duration = time_duration;
-    bookmark = millis();
-    FIRED = 0;
-    LOOP = repeat;
+    duration = time_duration;   // imposta la durata del timer
+    bookmark = millis();        // inizializza il bookmark con il millis corrente
+    FIRED = 0;                  // inizializza lo stato del timer
+    LOOP = repeat;              // imposta se il timer deve essere ripetitivo o meno
 }
 
 void DagTimer::run(void (*fun)(void))
@@ -33,21 +33,21 @@ void DagTimer::run(void (*fun)(void))
 
 bool DagTimer::clock()
 {
-    unsigned long dt = (millis() - bookmark);
-    bool res = false;
+    unsigned long dt = (millis() - bookmark);   // calcola il delta time
+    bool res = false;                           // inizializza il valore di ritorno
 
-    if ((dt > duration) && !FIRED)
+    if ((dt > duration) && !FIRED) // se è passato il periodo e il timer non è già scattato
     {
-        FIRED = 1;
-        res = true;
+        FIRED = 1;  // imposta lo stato del timer a scattato
+        res = true; // imposta il valore di ritorno a TRUE
 
-        if (LOOP)
+        if (LOOP) // se il timer è ripetitivo, reimposta il bookmark e lo stato del timer
         {
             bookmark = millis();
-            FIRED = 0;
+            FIRED = 0; // resetta lo stato del timer a non scattato per il prossimo loop in modo da ripetere l'operazione
         }
     }
-    else
+    else // se non è passato il periodo oppure il timer è già scattato imposta il valore di ritorno a FALSE
         res = false;
 
     return res;
@@ -55,6 +55,6 @@ bool DagTimer::clock()
 
 bool DagTimer::exhausted()
 {
-    unsigned long dt = (millis() - bookmark);
-    return (dt > duration);
+    unsigned long dt = (millis() - bookmark);  // calcola il delta time
+    return (dt > duration); // restituisce TRUE se è passato il periodo, FALSE altrimenti
 }
